@@ -1,0 +1,25 @@
+import 'dart:ui';
+
+class AppColors{
+  static const purple= Color.fromRGBO(121, 64, 152, 1);
+  static const white=Color.fromRGBO(255, 255, 255, 1);
+  static const textGrey=Color.fromRGBO(111, 111, 115, 1);
+  static const iconBackground=Color.fromRGBO(229, 226, 227, 1);
+  static const textTitleBlack=Color.fromRGBO(38, 38, 38, 1);
+  static const deactiveDot=Color.fromRGBO(226, 229, 229, 1);
+  static const activeDot=Color.fromRGBO(121, 64, 152, 1);
+  static const TextfieldborderColor=Color.fromRGBO(229, 229, 229, 1);
+  static const subTextGrey=Color.fromRGBO(119, 119, 119, 1);
+  static const homeBG=Color.fromRGBO(247, 246, 252, 1);
+  static const green=Color.fromRGBO(76, 175, 80, 1);
+  static const greenBG1=Color.fromRGBO(76, 175, 80, 0.1);
+  static const blue=Color.fromRGBO(46, 154, 197, 1);
+  static const blueBG1=Color.fromRGBO(46, 154, 197,0.1);
+
+
+
+
+
+
+
+}
