@@ -1,10 +1,21 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart' show GoogleFonts;
 
 import '../../res/colors.dart';
-import 'customTextStyles.dart';
 
 Widget CustomFlatButton(VoidCallback onpressed, String txt) {
   return TextButton(
-      onPressed: onpressed, child: Text(txt,style: CustomTextStyles().SemiBoldTextStyle().copyWith(fontSize: 16,color: AppColors.white,height: 1.5),));
+    style: TextButton.styleFrom(backgroundColor: AppColors.purple),
+    onPressed: onpressed,
+    child: Text(
+      txt,
+      style: GoogleFonts.beVietnamPro(
+        fontWeight: FontWeight.w600,
+        fontSize: 16,
+        color: AppColors.white,
+        letterSpacing: 0,
+        height: 1.5,
+      ),
+    ),
+  );
 }

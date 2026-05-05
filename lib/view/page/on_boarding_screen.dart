@@ -20,7 +20,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       title: "Organize Your Tasks in One Place",
       description: "Plan your day, manage your to-do lists, and keep track of everything that matters.",
     ),
-    OnBoardModel(
+     OnBoardModel(
       image: "assets/images/boarding_image2.png",
       title: "Plan Smarter and Stay Focused",
       description: "Break big goals into simple tasks and manage your time more effectively.",
@@ -34,17 +34,52 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   final controller=Get.put(OnboardingController());
   @override
   Widget build(BuildContext context) {
+    final scrHeight=MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: AppColors.white,
-      body:PageView.builder(
-          physics: NeverScrollableScrollPhysics(),
-          controller:controller.pageController,
-          itemCount: onboardingList.length,
-          onPageChanged: (index) => controller.onPageChanged(index),
-          itemBuilder: (context, index){
-            final item=onboardingList[index];
-            return OnBoardContent(title: item.title,description: item.description,image: item.image,index: index);
-          }
+      body:Stack(
+        alignment: Alignment.center,
+        children: [
+          PageView.builder(
+            physics: NeverScrollableScrollPhysics(),
+            controller:controller.pageController,
+            itemCount: onboardingList.length,
+            onPageChanged: (index) => controller.onPageChanged(index),
+            itemBuilder: (context, index){
+              final item=onboardingList[index];
+              return OnBoardContent(
+                  title: item.title,
+                  description: item.description,
+                  image: item.image,
+                  index: index);
+            }
+        ),//dot builder
+           Positioned(
+            bottom: scrHeight*0.33,
+            child: Obx(
+                  () => Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: List.generate(
+                  onboardingList.length,
+                      (index) => Container(
+                    margin: EdgeInsets.only(right: 8),
+                    height: 8,
+                    width: index == controller.currentPage.value
+                        ?48
+                        :20,
+                    decoration: BoxDecoration(
+                      color: index == controller.currentPage.value
+                          ? AppColors.activeDot
+                          : AppColors.deactiveDot,
+                      borderRadius: BorderRadius.circular(13),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          )
+        ]
       ),
     );
   }

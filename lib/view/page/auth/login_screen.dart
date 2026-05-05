@@ -1,49 +1,51 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:task_manager_app/controller/auth_controller.dart';
+import 'package:task_manager_app/controller/login_controller.dart';
 import 'package:task_manager_app/res/colors.dart';
+import 'package:task_manager_app/services/auth_services.dart';
 import 'package:task_manager_app/view/page/auth/forgot_password_screen.dart';
 import 'package:task_manager_app/view/page/auth/signup_screen.dart';
-import 'package:task_manager_app/view/page/main/home_screen.dart';
-import 'package:task_manager_app/view/widget/customTextStyles.dart';
+import 'package:task_manager_app/view/widget/app_textfields.dart';
 import 'package:task_manager_app/view/widget/custom_flat_button.dart';
-import 'package:task_manager_app/view/widget/custom_textfield.dart';
 import 'package:task_manager_app/view/widget/custom_titles.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
   static const route = "Login_scr";
-  final controller = Get.put(AuthController());
+  final controller = Get.put(LoginController());
+  final AuthServices auth=AuthServices();
+  var emailController=TextEditingController();
+  var passController=TextEditingController();
   @override
   Widget build(BuildContext context) {
-    double Scr_Height = MediaQuery.of(context).size.height;
-    double Scr_Width = MediaQuery.of(context).size.width;
-    var Figma_Height = 812;
-    var Figma_width = 375;
-    double H(double value) => (value / Figma_Height) * Scr_Height;
-    double W(double value) => (value / Figma_width) * Scr_Width;
+    double scrHeight = MediaQuery.of(context).size.height;
+    double scrWidth = MediaQuery.of(context).size.width;
+    var figmaHeight = 812;
+    var figmaWidth = 375;
+    double H(double value) => (value / figmaHeight) * scrHeight;
+    double W(double value) => (value / figmaWidth) * scrWidth;
 
     return Scaffold(
       backgroundColor: AppColors.white,
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: H(20)),
+        padding: EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
-            Container(height: H(44),),
+            Container(height: 44),
             Container(
-              margin: EdgeInsets.only(top: H(18)),
-              height: H(100),
-              width: H(100),
+              margin: EdgeInsets.only(top: 18),
+              height:100,
+              width: 100,
               child: Image.asset(
                 "assets/images/logo.png",
                 color: AppColors.purple,
               ),
             ),
             Container(
-              margin: EdgeInsets.only(top: H(12)),
-              height: H(36),
-              child: CustomText().CustomTitle("Welcome Back!", W(24)),
+              margin: EdgeInsets.only(top: 12),
+              height: 36,
+              child: CustomText().CustomTitle("Welcome Back!",24),
             ),
             Container(
               margin: EdgeInsets.only(top: H(12)),
@@ -56,21 +58,21 @@ class LoginScreen extends StatelessWidget {
             ),
             Container(
               margin: EdgeInsets.only(top: H(24)),
-              height: H(73),
-              child: CustomTextField(
+              child: AppTextfields().CustomTextField(
+                14,
                 "Email Address",
                 "e.g. jackrob187@gmail.com",
                 false,
                 false,
+                emailController,
               ),
             ),
             Container(
               margin: EdgeInsets.only(top: H(12)),
-              height: H(73),
               child: Obx(
                 () =>
-                    CustomTextField("Password", "* * * * * * *", true, false),
-              ),
+                    AppTextfields().CustomTextField(14,"Password", "* * * * * * *", true, false,passController),
+                  ),
             ),
             Container(
               margin: EdgeInsets.only(top: H(16), left: H(210)),
@@ -80,11 +82,7 @@ class LoginScreen extends StatelessWidget {
                   },
                 child: Text(
                   "Forgot password?",
-                  style: CustomTextStyles().MediumTextStyle().copyWith(
-                    fontSize: W(14),
-                    height: 1.5,
-                    color: AppColors.purple,
-                  ),
+                  style: Theme.of(context).textTheme.bodySmall
                 ),
               ),
             ),
@@ -93,8 +91,9 @@ class LoginScreen extends StatelessWidget {
               width: W(335),
               height: H(44),
               child: CustomFlatButton(() {
-                //logic of login
-                Get.offAllNamed(HomeScreen.route);
+                if(emailController.text.isNotEmpty && passController.text.isNotEmpty) {
+                  auth.loginUser(emailController.text, passController.text);
+                }
               }, "Log In"),
             ),
             Container(
@@ -105,7 +104,7 @@ class LoginScreen extends StatelessWidget {
                   Image.asset("assets/images/stroke.png"),
                   Text(
                     'Or continue with',
-                    style: CustomTextStyles().MediumTextStyle().copyWith(
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                       fontSize: H(14),
                       height: H(1.5),
                       color: AppColors.textGrey,
@@ -115,6 +114,7 @@ class LoginScreen extends StatelessWidget {
                 ],
               ),
             ),
+            //google apple logins
             Container(
               margin: EdgeInsets.only(top: H(24)),
               child: Row(
@@ -122,20 +122,25 @@ class LoginScreen extends StatelessWidget {
                 children: [
                   Expanded(
                     child: OutlinedButton(
-                      onPressed: () {},
+                      style: OutlinedButton.styleFrom(
+                          foregroundColor: AppColors.deactiveDot,
+                          side: BorderSide(color: AppColors.deactiveDot),
+                          alignment: Alignment.center,
+                        ),
+                      onPressed: () {
+                        AuthServices().continuewithGoogle();
+                      },
                       child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: H(12),vertical: W(10)),
+                        padding: EdgeInsets.symmetric(horizontal: 12,vertical: 10),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Image.asset("assets/images/google.png",height: H(28),),
+                            Image.asset("assets/images/google.png",height:28,),
                             Text(
                               "Google",
-                              style: CustomTextStyles()
-                                  .MediumTextStyle()
+                              style: Theme.of(context).textTheme.bodyLarge!
                                   .copyWith(
-                                    fontSize: H(16),
-                                    height: H(1.5),
+                                    fontSize: 16,
                                     color: AppColors.textTitleBlack,
                                   ),
                             ),
@@ -144,22 +149,25 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(width: W(16)),
+                  SizedBox(width: 16),
                   Expanded(
                     child: OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: AppColors.deactiveDot,
+                        side: BorderSide(color: AppColors.deactiveDot),
+                        alignment: Alignment.center,
+                      ),
                       onPressed: () {},
                       child: Padding(
-                        padding:  EdgeInsets.symmetric(horizontal: W(12),vertical: H(10)),
+                        padding:  EdgeInsets.symmetric(horizontal: 12,vertical: 10),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Image.asset("assets/images/apple.png",height: H(28),),
+                            Image.asset("assets/images/apple.png",height: 28),
                             Text("Apple",
-                              style: CustomTextStyles()
-                                  .MediumTextStyle()
+                              style: Theme.of(context).textTheme.bodyLarge!
                                   .copyWith(
-                                fontSize: H(16),
-                                height: H(1.5),
+                                fontSize: 16,
                                 color: AppColors.textTitleBlack,
                               ),
                             ),
@@ -173,9 +181,10 @@ class LoginScreen extends StatelessWidget {
               ),
             ),
             //don't have acc
-            Container(margin:  EdgeInsets.only(top: H(84),bottom: H(6)),
-              child: RichText(text: TextSpan(text: "Don’t have an account?",style:CustomTextStyles().RegularTextStyle().copyWith(color: AppColors.textGrey,fontSize: H(14)),children: [
-                TextSpan(text: " Sign Up",style: CustomTextStyles().RegularTextStyle().copyWith(color: AppColors.purple,fontSize: H(14)),recognizer: TapGestureRecognizer()..onTap=(){
+            Spacer(),
+            Container(margin:  EdgeInsets.only(bottom: 34),alignment: Alignment.center,
+              child: RichText(text: TextSpan(text: "Don’t have an account?",style:Theme.of(context).textTheme.headlineSmall!.copyWith(color: AppColors.textGrey,fontSize: H(14)),children: [
+                TextSpan(text: " Sign Up",style: Theme.of(context).textTheme.headlineSmall!.copyWith(color: AppColors.purple,fontSize: H(14)),recognizer: TapGestureRecognizer()..onTap=(){
                   Get.toNamed(SignupScreen.route);
                 })
               ]),
