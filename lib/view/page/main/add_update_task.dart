@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:task_manager_app/controller/login_controller.dart';
 import 'package:task_manager_app/data_models/task_model.dart';
 import 'package:task_manager_app/res/colors.dart';
 import 'package:task_manager_app/services/auth_services.dart';
@@ -10,13 +11,14 @@ import 'package:task_manager_app/view/widget/app_textfields.dart';
 import 'package:task_manager_app/view/widget/custom_flat_button.dart';
 import 'package:task_manager_app/view/widget/upper_bar/common_upper_bar.dart';
 
+import '../../../app_services/app_services.dart' show AppServices, SnackBarType;
 import '../../widget/confirmation_dialog.dart' show ConfirmationDialog;
 
-class AddNewTask extends StatefulWidget {
+class AddEditTask extends StatefulWidget {
   final bool isNewRecord;
   final TaskModel? item;
 
-  const AddNewTask({this.item, this.isNewRecord = true, super.key})
+  const AddEditTask({this.item, this.isNewRecord = true, super.key})
     : assert(
         isNewRecord || item != null,
         'If isNewRecord is false, an item must be provided.',
@@ -25,17 +27,18 @@ class AddNewTask extends StatefulWidget {
   static const route = "Add-New-Task-Screen";
 
   @override
-  State<AddNewTask> createState() => _AddNewTaskState();
+  State<AddEditTask> createState() => _AddEditTaskState();
 }
 
-class _AddNewTaskState extends State<AddNewTask> {
+class _AddEditTaskState extends State<AddEditTask> {
+  final loginController=Get.find<LoginController>();
   @override
   void initState() {
     super.initState();
     if (!widget.isNewRecord) {
       titleController.text = widget.item!.title!;
       descriptionController.text = widget.item!.description!;
-      dueController.text = widget.item!.due_date!;
+      dueController.text = widget.item!.dueDate!;
     }
   }
 
@@ -190,40 +193,41 @@ class _AddNewTaskState extends State<AddNewTask> {
               margin: EdgeInsets.only(bottom: 40),
               width: double.infinity,
               height: 48,
-              child: CustomFlatButton(() {
-                if (titleController.text.isNotEmpty &&
-                    descriptionController.text.isNotEmpty &&
-                    dueController.text.isNotEmpty) {
-                  if (widget.isNewRecord) {
-                    //add new task
-                    var temp = TaskModel(
-                      title: titleController.text,
-                      description: descriptionController.text,
-                      created_at: DateTime.now().toString(),
-                      due_date: dueController.text,
-                      is_completed: false,
-                    );
-                    AuthServices().addNewTask(temp);
-                    Get.back();
+              child: Obx(() => loginController.isLoading.value?const Center(child: CircularProgressIndicator()):CustomFlatButton(() {
+                  if (titleController.text.isNotEmpty &&
+                      descriptionController.text.isNotEmpty &&
+                      dueController.text.isNotEmpty) {
+                    if (widget.isNewRecord) {
+                      //add new task
+                      var temp = TaskModel(
+                        title: titleController.text,
+                        description: descriptionController.text,
+                        createdAt: DateTime.now().toString(),
+                        dueDate: dueController.text,
+                        isCompleted: false,
+                      );
+                      AuthServices().addNewTask(temp);
+                      Get.back();
+                    } else {
+                      //update task
+                      var temp = TaskModel(
+                        id:widget.item!.id ,
+                        title: titleController.text,
+                        description: descriptionController.text,
+                        createdAt: DateTime.now().toString(),
+                        dueDate: dueController.text,
+                        isCompleted: widget.item!.isCompleted,
+                      );
+                      log("btn tapped!! with data $temp");
+                      AuthServices().updateTask(temp);
+                      // Get.back();
+                    }
                   } else {
-                    //update task
-                    var temp = TaskModel(
-                      id:widget.item!.id ,
-                      title: titleController.text,
-                      description: descriptionController.text,
-                      created_at: DateTime.now().toString(),
-                      due_date: dueController.text,
-                      is_completed: widget.item!.is_completed,
-                    );
-                    log("btn tapped!! with data $temp");
-                    AuthServices().updateTask(temp);
-                    Get.back();
+                    //empty fields exception handled
+                    AppServices.showSnackBar(SnackBarType.info, "Please Fill All Required Details");
                   }
-                } else {
-                  //empty fields exception handled
-                  Get.snackbar("Message", "Please Fill All Required Details");
-                }
-              }, "Save"),
+                }, "Save"),
+              ),
             ),
           ],
         ),

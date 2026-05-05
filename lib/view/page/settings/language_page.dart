@@ -10,9 +10,9 @@ class LanguagePage extends StatelessWidget {
     "Hindi","English","Gujarati","Marathi","Bengali","Punjabi","Tamil","Telugu","Malayalam","Kannada","Urdu","Odia","Assamese","Sanskrit","Nepali","Bhojapuri",
   ];
 
-  LanguagePage({super.key});
+   LanguagePage({super.key});
   static const String route = "Language=page";
-  var searchController = TextEditingController();
+  final searchController = TextEditingController();
   final langController=Get.put(LanguageController());
   @override
   Widget build(BuildContext context) {
@@ -47,12 +47,12 @@ class LanguagePage extends StatelessWidget {
                 },
                 child: Container(
                     decoration: BoxDecoration(
-                      color: langController.currenLanguage==listOfLanguage[index]?AppColors.lightpurple:Colors.transparent,
-                      border: Border.all(color: langController.currenLanguage==listOfLanguage[index]?AppColors.purple:AppColors.midGrey,),
+                      color: langController.currenLanguage.value==listOfLanguage[index]?AppColors.lightpurple:Colors.transparent,
+                      border: Border.all(color: langController.currenLanguage.value==listOfLanguage[index]?AppColors.purple:AppColors.midGrey,),
                       borderRadius: BorderRadius.circular(8)
                     ),alignment: Alignment.center
                     ,child: Text(listOfLanguage[index],
-                style: langController.currenLanguage==listOfLanguage[index]
+                style: langController.currenLanguage.value==listOfLanguage[index]
                     ? Theme.of(context).textTheme.titleLarge!.copyWith( fontSize: 14,)
                     : Theme.of(context).textTheme.headlineSmall!.copyWith(fontSize: 14)),  ),
               ),

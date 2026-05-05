@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:task_manager_app/app_services/app_services.dart';
 import 'package:task_manager_app/controller/auth_controller.dart';
 import 'package:task_manager_app/data_models/user_model.dart';
 import 'package:task_manager_app/res/app_constants.dart';
@@ -60,11 +61,11 @@ class _SplashScreenState extends State<SplashScreen> {
       // user logins with google (ession made =need to call fetch User())
       if(tempList!=null){
         log("tempList!=null");
-        final UserModel AlreadyLoginUser=UserModel(id: tempList[0],firstName: tempList[1],lastName: tempList[2],email: tempList[3]);
-         Get.offAll(MainScreen(user: AlreadyLoginUser));
+        final UserModel alreadyLoggedInUser=UserModel(id: tempList[0],firstName: tempList[1],lastName: tempList[2],email: tempList[3]);
+         Get.offAll(MainScreen(user: alreadyLoggedInUser));
       }
       else{
-        Get.snackbar("Error", "Cant find user");
+        AppServices.showSnackBar(SnackBarType.error, "Cant find user" );
       }
 
     }

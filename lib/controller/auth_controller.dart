@@ -7,6 +7,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:task_manager_app/data_models/user_model.dart';
 import 'package:task_manager_app/res/app_constants.dart';
 
+import '../app_services/app_services.dart' show AppServices, SnackBarType;
 import '../view/page/auth/login_screen.dart' show LoginScreen;
 import '../view/page/main/main_screen.dart' show MainScreen;
 import 'home_controller.dart' show HomeController;
@@ -30,13 +31,15 @@ class AuthController extends GetxController {
       } else if (event == AuthChangeEvent.signedIn) {
         Get.delete<HomeController>();
         final tempUsr= await fetchUser();
-        tempUsr!=null?Get.offAll(MainScreen(user: tempUsr)):Get.snackbar("Error", "Cant find user");
+        tempUsr!=null?Get.offAll(MainScreen(user: tempUsr)):
+        AppServices.showSnackBar(SnackBarType.error, "Cant find user");
       }
       else if(event ==AuthChangeEvent.userUpdated){
         log("user updated");
         Get.delete<HomeController>();
         final tempUsr= await fetchUser();
-        tempUsr!=null?Get.offAll(MainScreen(user: tempUsr)):Get.snackbar("Error", "Cant find user");
+        tempUsr!=null?Get.offAll(MainScreen(user: tempUsr)):
+        AppServices.showSnackBar(SnackBarType.error, "Cant find user");
       }
     });
   }

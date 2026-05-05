@@ -8,10 +8,10 @@ import 'package:task_manager_app/view/widget/upper_bar/common_upper_bar.dart';
 
 
 class TaskDetailPage extends StatelessWidget {
-  TaskModel item;
-  VoidCallback onEdit;
-  VoidCallback onDelete;
-  TaskDetailPage({
+  final TaskModel item;
+  final VoidCallback onEdit;
+  final VoidCallback onDelete;
+  const TaskDetailPage({
     super.key,
     required this.item,
     required this.onEdit,
@@ -91,7 +91,7 @@ class TaskDetailPage extends StatelessWidget {
                         ),
                         SizedBox(height: 8),
                         Text(
-                          item.created_at!,
+                          item.createdAt!,
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
                       ],
@@ -109,7 +109,7 @@ class TaskDetailPage extends StatelessWidget {
                         ),
                         SizedBox(height: 8),
                         Text(
-                          item.due_date!,
+                          item.dueDate!,
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
                       ],

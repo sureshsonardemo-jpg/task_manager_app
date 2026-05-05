@@ -1,8 +1,8 @@
-import 'dart:developer';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:task_manager_app/app_services/app_services.dart';
 import 'package:task_manager_app/controller/login_controller.dart';
 import 'package:task_manager_app/res/colors.dart' show AppColors;
 import 'package:task_manager_app/view/page/auth/login_screen.dart';
@@ -214,33 +214,28 @@ class SignupScreen extends StatelessWidget {
                   ),
                 ),
                 // signup button
-                Container(
-                  width: double.infinity,
-                  margin: EdgeInsets.only(top: H(24)),
-                  child: controller.isLoading.value
-                      ? CircularProgressIndicator()
-                      : CustomFlatButton(() {
-                          if (!controller.isChecked.value) {
-                            Get.snackbar(
-                              "Please",
-                              "Agree Terms & Policies Before Registration",
-                            );
-                          }
-                          if (_formKey.currentState!.validate() &&
-                              passController.text == cPassController.text) {
-                            auth.signupUser(
-                              fNameController.text,
-                              lNameController.text,
-                              emailController.text,
-                              passController.text,
-                            );
-
-                          } else {
-                            log("empty checking ${fNameController.text.isNotEmpty}");
-                            log("controller value ${controller.isChecked.value}");
-                            log("first case failed");
-                                }
-                        }, "Sign Up"),
+                Obx(() => Container(
+                    width: double.infinity,
+                    margin: EdgeInsets.only(top: H(24)),
+                    child: controller.isLoading.value
+                        ? Center(
+                        child: CircularProgressIndicator())
+                        : CustomFlatButton(() {
+                            if (!controller.isChecked.value) {
+                              AppServices.showSnackBar(SnackBarType.info, "Agree Terms & Policies Before Registration",);
+                            }else{
+                              if (_formKey.currentState!.validate() &&
+                                  passController.text == cPassController.text) {
+                                auth.signupUser(
+                                  fNameController.text,
+                                  lNameController.text,
+                                  emailController.text,
+                                  passController.text,
+                                );
+                              }
+                            }
+                          }, "Sign Up"),
+                  ),
                 ),
                 //continue with + social logins
                 Container(
@@ -268,37 +263,39 @@ class SignupScreen extends StatelessWidget {
                     children: [
                       Expanded(
                         child: OutlinedButton(
-                          style: OutlinedButton.styleFrom(
-                            foregroundColor: AppColors.deactiveDot,
-                            side: BorderSide(color: AppColors.deactiveDot),
-                            alignment: Alignment.center,
-                          ),
-                          onPressed: () {},
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 10,
+                            style: OutlinedButton.styleFrom(
+                              foregroundColor: AppColors.deactiveDot,
+                              side: BorderSide(color: AppColors.deactiveDot),
+                              alignment: Alignment.center,
                             ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Image.asset(
-                                  "assets/images/google.png",
-                                  height: 28,
-                                ),
-                                Text(
-                                  "Google",
-                                  style:Theme.of(context).textTheme.bodyLarge!
-                                      .copyWith(
-                                        fontSize: 16,
-                                        color: AppColors.textTitleBlack,
-                                      ),
-                                ),
-                              ],
+                            onPressed: () {
+                              AuthServices().continueWithGoogle();
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 10,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Image.asset(
+                                    "assets/images/google.png",
+                                    height: 28,
+                                  ),
+                                  Text(
+                                    "Google",
+                                    style:Theme.of(context).textTheme.bodyLarge!
+                                        .copyWith(
+                                          fontSize: 16,
+                                          color: AppColors.textTitleBlack,
+                                        ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
                       SizedBox(width: W(16)),
                       Expanded(
                         child: OutlinedButton(

@@ -11,7 +11,6 @@ import 'package:task_manager_app/view/page/auth/login_screen.dart';
 import 'package:task_manager_app/view/page/auth/signup_screen.dart';
 import 'package:task_manager_app/view/page/on_boarding_screen.dart';
 import 'package:task_manager_app/view/page/settings/language_page.dart';
-import 'package:task_manager_app/view/page/settings/setting_page.dart';
 import 'package:task_manager_app/view/page/splash_screen.dart';
 
 

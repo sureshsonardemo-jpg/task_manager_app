@@ -87,6 +87,5 @@ class AppTranslations extends Translations {
       "Let’s get things done today.": "ఈ రోజు పనులు పూర్తి చేద్దాం."
     }
 
-
   };
 }

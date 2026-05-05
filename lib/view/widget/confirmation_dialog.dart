@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:task_manager_app/controller/login_controller.dart';
 import 'package:task_manager_app/res/colors.dart' show AppColors;
 import 'custom_flat_button.dart' show CustomFlatButton;
 
@@ -8,8 +9,8 @@ class ConfirmationDialog extends StatelessWidget {
   final String imgPath,titletxt,bodytxt,canceltxt,confirmtxt;
   final VoidCallback onDelete;
   final double gapHeight;
-  const ConfirmationDialog({super.key,required this.gapHeight, required this.imgPath, required this.titletxt, required this.bodytxt, required this.canceltxt, required this.confirmtxt, required this.onDelete,});
-
+   ConfirmationDialog({super.key,required this.gapHeight, required this.imgPath, required this.titletxt, required this.bodytxt, required this.canceltxt, required this.confirmtxt, required this.onDelete,});
+  final loginController=Get.find<LoginController>();
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -50,9 +51,10 @@ class ConfirmationDialog extends StatelessWidget {
                 children: [
                   Expanded(flex: 1,
                     child: SizedBox(height: gapHeight>28?40:48,
-                      child: OutlinedButton(
-                        onPressed: onDelete,
-                        child: Text(confirmtxt),
+                      child: Obx(() =>loginController.isLoading.value?const Center(child: CircularProgressIndicator(),):OutlinedButton(
+                          onPressed: onDelete,
+                          child: Text(confirmtxt),
+                        ),
                       ),
                     ),
                   ),

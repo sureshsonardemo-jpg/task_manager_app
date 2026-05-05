@@ -1,8 +1,8 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart' show GoogleFonts;
+import 'package:task_manager_app/app_services/app_services.dart';
 import 'package:task_manager_app/controller/auth_controller.dart';
 import 'package:task_manager_app/controller/home_controller.dart';
 import 'package:task_manager_app/res/colors.dart' show AppColors;
@@ -15,7 +15,7 @@ import '../../widget/build_tabs.dart' show BuildTab;
 import '../../widget/empty_task.dart' show EmptyTaskWidget;
 import '../../widget/search_field.dart' show SearchField;
 import '../../widget/task_card.dart' show TaskCard;
-import 'add_new_task.dart' show AddNewTask;
+import 'add_update_task.dart' show AddEditTask;
 import 'task_detail_page.dart' show TaskDetailPage;
 
 class HomePage extends StatelessWidget {
@@ -34,7 +34,7 @@ class HomePage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Hello'.tr+" ${userModel.firstName} 👋",
+              '${'Hello'.tr}${userModel.firstName} 👋',
               style: Theme.of(
                 context,
               ).textTheme.titleMedium!.copyWith(fontSize: 18, height: 1.5),
@@ -119,7 +119,6 @@ class HomePage extends StatelessWidget {
                 TaskDetailPage(
                   item: task,
                   onDelete: () {
-                    log("delete pressed ");
                     Get.dialog(
                       ConfirmationDialog(
                         gapHeight: 36,
@@ -137,26 +136,25 @@ class HomePage extends StatelessWidget {
                     );
                   },
                   onEdit: () {
-                    Get.off(AddNewTask(isNewRecord: false, item: task));
+                    Get.off(AddEditTask(isNewRecord: false, item: task));
                   },
                 ),
               );
             },
             onCheck: () {
-              if (!task.is_completed!) {
-                task.is_completed = true;
-                homeController.taskList[index].is_completed = true;
+              if (!task.isCompleted!) {
+                task.isCompleted = true;
+                homeController.taskList[index].isCompleted = true;
                 //update task
-                var temp = TaskModel(id:task.id, is_completed: true, title: task.title, description: task.description, created_at: DateTime.now().toString(), due_date: task.due_date);
+                var temp = TaskModel(id:task.id, isCompleted: true, title: task.title, description: task.description, createdAt: DateTime.now().toString(), dueDate: task.dueDate);
                 AuthServices().updateTask(temp);
-                Get.back();
+               Get.back();
               } else {
-                Get.closeCurrentSnackbar();
-                Get.snackbar("Mistake", "Already Checked");
+                AppServices.showSnackBar(SnackBarType.info, "Already Checked");
               }
             },
             onEdit: () {
-              Get.to(AddNewTask(isNewRecord: false, item: task));
+              Get.to(AddEditTask(isNewRecord: false, item: task));
             },
             onDelete: () {
               Get.dialog(

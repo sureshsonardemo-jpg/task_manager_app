@@ -116,7 +116,7 @@ class AppTextfields {
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide(
-                color: AppColors.TextfieldborderColor,
+                color: AppColors.textFieldBorder,
                 style: BorderStyle.solid,
                 width: 1,
               ),
@@ -124,7 +124,7 @@ class AppTextfields {
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide(
-                color: AppColors.TextfieldborderColor,
+                color: AppColors.textFieldBorder,
                 style: BorderStyle.solid,
                 width: 1,
               ),
@@ -132,7 +132,7 @@ class AppTextfields {
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide(
-                color: AppColors.TextfieldborderColor,
+                color: AppColors.textFieldBorder,
                 style: BorderStyle.solid,
                 width: 1,
               ),
@@ -186,7 +186,7 @@ class AppTextfields {
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(13),
               borderSide: BorderSide(
-                color: AppColors.TextfieldborderColor,
+                color: AppColors.textFieldBorder,
                 style: BorderStyle.solid,
                 width: 1,
               ),
@@ -194,7 +194,7 @@ class AppTextfields {
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(13),
               borderSide: BorderSide(
-                color: AppColors.TextfieldborderColor,
+                color: AppColors.textFieldBorder,
                 style: BorderStyle.solid,
                 width: 1,
               ),
@@ -202,7 +202,7 @@ class AppTextfields {
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(13),
               borderSide: BorderSide(
-                color: AppColors.TextfieldborderColor,
+                color: AppColors.textFieldBorder,
                 style: BorderStyle.solid,
                 width: 1,
               ),
@@ -262,3 +262,34 @@ class AppTextfields {
 
 
 }
+/*this is too late for chanages
+class Simple__TextFelds extends StatelessWidget {
+   Simple__TextFelds({super.key});
+  TextEditingController controller;
+  String hintText;
+      bool isDate;
+      VoidCallback? ontap;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      controller: controller,
+      onTap: isDate ? ontap : null,
+      readOnly: isDate,
+      decoration: InputDecoration(
+        border: InputBorder.none,
+        hint: Text(
+          hintText,
+          style: GoogleFonts.beVietnamPro(
+            fontWeight: FontWeight.w500,
+            fontSize: 16,
+            height: 1.5,
+            letterSpacing: 0,
+            color: AppColors.textTitleBlack,
+          ),
+        ),
+      ),
+    );
+  }
+}
+*/

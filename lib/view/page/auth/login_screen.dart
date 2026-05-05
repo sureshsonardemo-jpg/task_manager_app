@@ -13,10 +13,10 @@ import 'package:task_manager_app/view/widget/custom_titles.dart';
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
   static const route = "Login_scr";
-  final controller = Get.put(LoginController());
+  final loginController = Get.put(LoginController());
   final AuthServices auth=AuthServices();
-  var emailController=TextEditingController();
-  var passController=TextEditingController();
+  final emailController=TextEditingController();
+  final passController=TextEditingController();
   @override
   Widget build(BuildContext context) {
     double scrHeight = MediaQuery.of(context).size.height;
@@ -90,11 +90,12 @@ class LoginScreen extends StatelessWidget {
               margin: EdgeInsets.only(top: W(24)),
               width: W(335),
               height: H(44),
-              child: CustomFlatButton(() {
-                if(emailController.text.isNotEmpty && passController.text.isNotEmpty) {
-                  auth.loginUser(emailController.text, passController.text);
-                }
-              }, "Log In"),
+              child: Obx(() =>  loginController.isLoading.value ?const Center(child: CircularProgressIndicator()):CustomFlatButton(() {
+                  if(emailController.text.isNotEmpty && passController.text.isNotEmpty) {
+                    auth.loginUser(emailController.text, passController.text);
+                  }
+                }, "Log In"),
+              ),
             ),
             Container(
               margin: EdgeInsets.only(top: H(24)),
@@ -121,33 +122,34 @@ class LoginScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
-                    child: OutlinedButton(
-                      style: OutlinedButton.styleFrom(
-                          foregroundColor: AppColors.deactiveDot,
-                          side: BorderSide(color: AppColors.deactiveDot),
-                          alignment: Alignment.center,
-                        ),
-                      onPressed: () {
-                        AuthServices().continuewithGoogle();
-                      },
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 12,vertical: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Image.asset("assets/images/google.png",height:28,),
-                            Text(
-                              "Google",
-                              style: Theme.of(context).textTheme.bodyLarge!
-                                  .copyWith(
-                                    fontSize: 16,
-                                    color: AppColors.textTitleBlack,
-                                  ),
-                            ),
-                          ],
+                    child:OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                            foregroundColor: AppColors.deactiveDot,
+                            side: BorderSide(color: AppColors.deactiveDot),
+                            alignment: Alignment.center,
+                          ),
+                        onPressed: () {
+                          AuthServices().continueWithGoogle();
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 12,vertical: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Image.asset("assets/images/google.png",height:28,),
+                              Text(
+                                "Google",
+                                style: Theme.of(context).textTheme.bodyLarge!
+                                    .copyWith(
+                                      fontSize: 16,
+                                      color: AppColors.textTitleBlack,
+                                    ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
+
                   ),
                   SizedBox(width: 16),
                   Expanded(

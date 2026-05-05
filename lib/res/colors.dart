@@ -9,7 +9,7 @@ class AppColors{
   static const textTitleBlack=Color.fromRGBO(38, 38, 38, 1);
   static const deactiveDot=Color.fromRGBO(226, 229, 229, 1);
   static const activeDot=Color.fromRGBO(121, 64, 152, 1);
-  static const TextfieldborderColor=Color.fromRGBO(229, 229, 229, 1);
+  static const textFieldBorder=Color.fromRGBO(229, 229, 229, 1);
   static const subTextGrey=Color.fromRGBO(119, 119, 119, 1);
   static const homeBG=Color.fromRGBO(247, 246, 252, 1);
   static const green=Color.fromRGBO(76, 175, 80, 1);

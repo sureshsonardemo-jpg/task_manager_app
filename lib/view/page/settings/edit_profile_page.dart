@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:task_manager_app/app_services/app_services.dart';
+import 'package:task_manager_app/controller/login_controller.dart';
 import 'package:task_manager_app/data_models/user_model.dart';
 import 'package:task_manager_app/services/auth_services.dart';
 import 'package:task_manager_app/view/widget/app_textfields.dart';
@@ -10,10 +12,11 @@ import '../../widget/upper_bar/common_upper_bar.dart' show CommonUpperBar;
 class EditProfilePage extends StatelessWidget {
   final UserModel usr;
   EditProfilePage({super.key, required this.usr});
-  var firstNameController = TextEditingController();
-  var lastNameController = TextEditingController();
-  var emailController = TextEditingController();
+  final firstNameController = TextEditingController();
+  final lastNameController = TextEditingController();
+  final emailController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  final loginController=Get.find<LoginController>();
 
   @override
   Widget build(BuildContext context) {
@@ -95,17 +98,16 @@ class EditProfilePage extends StatelessWidget {
                 margin: EdgeInsets.only(bottom: 40),
                 width: double.infinity,
                 height: 48,
-                child: CustomFlatButton((){
-                  if(_formKey.currentState!.validate()){
-                    if(firstNameController.text ==usr.firstName
-                        && lastNameController.text ==usr.lastName){
-                      Get.snackbar("Nothing Changed", "Current values should be different from previous values");
+                child: Obx(() => loginController.isLoading.value?const Center(child: CircularProgressIndicator(),):CustomFlatButton((){
+                    if(_formKey.currentState!.validate()){
+                      if(firstNameController.text ==usr.firstName
+                          && lastNameController.text ==usr.lastName){
+                        AppServices.showSnackBar(SnackBarType.info, "Current values should be different from previous values");
+                      }
+                      else{AuthServices().updateAccount(firstNameController.text, lastNameController.text);}
                     }
-                    else{
-                      AuthServices().updateAccount(firstNameController.text, lastNameController.text);
-                    }
-                  }
-                }, "Save Changes"),
+                  }, "Save Changes"),
+                ),
               ),
             ],
           ),

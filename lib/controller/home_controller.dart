@@ -10,8 +10,8 @@ class HomeController extends GetxController {
   final supabase = Supabase.instance.client;
   late final StreamSubscription _taskSub;
   RxList<TaskModel> taskList = <TaskModel>[].obs;
-  RxList<TaskModel> get pendingTasks => taskList.where((e) => e.is_completed==false).toList().obs;
-  RxList<TaskModel> get completedTasks => taskList.where((e) => e.is_completed==true,).toList().obs;
+  RxList<TaskModel> get pendingTasks => taskList.where((e) => e.isCompleted==false).toList().obs;
+  RxList<TaskModel> get completedTasks => taskList.where((e) => e.isCompleted==true,).toList().obs;
   RxList<TaskModel>  filteredList = <TaskModel>[].obs;
 
   @override

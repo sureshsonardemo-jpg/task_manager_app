@@ -20,7 +20,7 @@ class SettingPage extends StatelessWidget {
   final homeController = Get.find<HomeController>();
 
 
-  List<MenuItemModel> listOfMenuItems=[
+  final List<MenuItemModel> listOfMenuItems=[
     MenuItemModel("assets/images/translate.svg", "Language", AppColors.textTitleBlack),
     MenuItemModel( "assets/images/logout.svg",  "Log out",  AppColors.red)
   ];

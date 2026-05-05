@@ -66,7 +66,7 @@ class TaskCard extends StatelessWidget {
                     ),
                     SizedBox(height: 8),
                     Text(
-                      "Due: ${taskModel.due_date}",
+                      "Due: ${taskModel.dueDate}",
                       style: GoogleFonts.beVietnamPro(
                         fontWeight: FontWeight.w500,
                         fontSize: 12,
@@ -115,21 +115,21 @@ class TaskCard extends StatelessWidget {
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(4),
-                          color: taskModel.is_completed!
+                          color: taskModel.isCompleted!
                               ? AppColors.blueBG1
                               : AppColors.greenBG1,
                         ),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            taskModel.is_completed!
+                            taskModel.isCompleted!
                                 ? "Completed"
                                 : "Mark as completed",
                             style: GoogleFonts.beVietnamPro(
                               fontWeight: FontWeight.w600,
                               fontSize: 10,
                               height: 1.5,
-                              color: taskModel.is_completed!
+                              color: taskModel.isCompleted!
                                   ? AppColors.blue
                                   : AppColors.green,
                             ),

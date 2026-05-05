@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:task_manager_app/controller/login_controller.dart';
 import 'package:task_manager_app/services/auth_services.dart';
 import 'package:task_manager_app/view/page/auth/login_screen.dart';
 import 'package:task_manager_app/view/widget/custom_flat_button.dart';
@@ -14,6 +15,7 @@ class ResetPasswordScreen extends StatelessWidget {
   static const String route="Reset-pass-scr";
   final emailController=TextEditingController();
   final passController=TextEditingController();
+  final loginController=Get.find<LoginController>();
 
   @override
   Widget build(BuildContext context) {
@@ -57,10 +59,11 @@ class ResetPasswordScreen extends StatelessWidget {
               ),
               Spacer(),
               Container(margin: EdgeInsets.only(top: 12,bottom: 12),width: double.infinity,height: 48,
-                child: CustomFlatButton(()  {
-                  AuthServices().resetPassword(passController.text);
-                  Get.back();
-                }, "Continue"),
+                child: Obx(() =>loginController.isLoading.value?const Center(child: CircularProgressIndicator()):CustomFlatButton(()  {
+                    AuthServices().resetPassword(passController.text);
+                    Get.back();
+                  }, "Continue"),
+                ),
               )
             ],
           ),

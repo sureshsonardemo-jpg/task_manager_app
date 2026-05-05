@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:task_manager_app/controller/login_controller.dart';
 import 'package:task_manager_app/data_models/user_model.dart';
 import 'package:task_manager_app/res/colors.dart' show AppColors;
 import 'package:task_manager_app/services/auth_services.dart';
@@ -13,8 +12,8 @@ import '../../widget/upper_bar/common_upper_bar.dart';
 
 class ProfileDetailsPage extends StatelessWidget {
   final UserModel usr;
-  const ProfileDetailsPage({super.key, required this.usr});
-
+   ProfileDetailsPage({super.key, required this.usr});
+  final loginController= Get.find<LoginController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -137,25 +136,26 @@ class ProfileDetailsPage extends StatelessWidget {
             Container(
               width: double.infinity,
               margin: EdgeInsets.only(bottom: 34),
-              child: OutlinedButton(
-                onPressed: () {
-                  Get.dialog(
-                    ConfirmationDialog(
-                      gapHeight: 30,
-                      imgPath: "assets/images/OnDelete.png",
-                      titletxt: "Delete Account",
-                      bodytxt:
-                          "Are you sure you want to delete this account? All your data will be erased.",
-                      canceltxt: "No, Keep it",
-                      confirmtxt: "Yes, Delete",
-                      onDelete: () {
-                        AuthServices().deleteAccount();
-                        Get.back();
-                      },
-                    ),
-                  );
-                },
-                child: Text("Delete Account"),
+              child: Obx(() => loginController.isLoading.value?const Center(child:  CircularProgressIndicator()):OutlinedButton(
+                  onPressed: () {
+                    Get.dialog(
+                      ConfirmationDialog(
+                        gapHeight: 30,
+                        imgPath: "assets/images/OnDelete.png",
+                        titletxt: "Delete Account",
+                        bodytxt:
+                            "Are you sure you want to delete this account? All your data will be erased.",
+                        canceltxt: "No, Keep it",
+                        confirmtxt: "Yes, Delete",
+                        onDelete: () {
+                          AuthServices().deleteAccount();
+                          Get.back();
+                        },
+                      ),
+                    );
+                  },
+                  child: Text("Delete Account"),
+                ),
               ),
             ),
           ],
