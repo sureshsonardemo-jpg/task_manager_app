@@ -56,8 +56,10 @@ class HomePage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
               ),
               child: SearchField(
-                controller: searchController,
                 hinttext: "Search Tasks...",
+                onChange: (value) {
+                  homeController.filterList(value);
+                },
               ),
             ),
             Container(

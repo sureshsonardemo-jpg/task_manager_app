@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:task_manager_app/controller/auth_controller.dart';
+import 'package:task_manager_app/res/app_constants.dart';
 import 'package:task_manager_app/res/colors.dart';
 import 'package:task_manager_app/services/app_translations.dart';
 import 'package:task_manager_app/view/page/auth/forgot_password_screen.dart';
@@ -21,16 +23,21 @@ Future<void> main() async {
     anonKey: dotenv.env['SUPABASE_ANONKEY']!,
   );
   Get.put(AuthController(), permanent: true);
-  runApp(const MyApp());
+  SharedPreferences prefs=await SharedPreferences.getInstance();
+  String langCode=prefs.getString(AppConstants.langCode)??'en';
+  runApp(MyApp( langCode: langCode,));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+
+  final String langCode;
+
+  const MyApp({super.key,required this.langCode});
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
       translations: AppTranslations(),
-      locale: const Locale('en'),
+      locale:  Locale(langCode),
       fallbackLocale: const Locale('en'),
       title: 'Flutter Demo',
       theme:ThemeData(

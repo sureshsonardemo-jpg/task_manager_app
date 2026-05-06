@@ -42,6 +42,7 @@ class HomeController extends GetxController {
     }
   }
 
+
   RxInt selectedIndex = 0.obs;
   //for navbar pagging navigation
   RxInt pageIndex = 0.obs;
