@@ -5,24 +5,24 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task_manager_app/res/app_constants.dart';
 
-class LanguageController extends GetxController
-{
+class LanguageController extends GetxController {
   @override
   Future<void> onInit() async {
     log("oninit calleed");
-   filteredLanguage.assignAll(listOfLanguage);
-   SharedPreferences prefs=await SharedPreferences.getInstance();
-   String langName=prefs.getString(AppConstants.langName)??'English';
-   log("lang code $langName");
-   currenLanguage.value=langName;
-   log("currenLanguage ${currenLanguage.value}");
+    filteredLanguage.assignAll(listOfLanguage);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String langName = prefs.getString(AppConstants.langName) ?? 'English';
+    log("lang code $langName");
+    currenLanguage.value = langName;
+    log("currenLanguage ${currenLanguage.value}");
     super.onInit();
   }
-  void resetList()
-  {
-   query.value;
-   filteredLanguage.assignAll(listOfLanguage);
+
+  void resetList() {
+    query.value;
+    filteredLanguage.assignAll(listOfLanguage);
   }
+
   //ui
   final RxList<String> listOfLanguage = [
     "Hindi",
@@ -43,8 +43,8 @@ class LanguageController extends GetxController
     "Bhojapuri",
   ].obs;
   final RxList<String> filteredLanguage = <String>[].obs;
-  RxString query="".obs;
-  RxString currenLanguage="".obs;
+  RxString query = "".obs;
+  RxString currenLanguage = "".obs;
 
   final Map<String, String> languageMap = {
     "English": "en",
@@ -66,26 +66,30 @@ class LanguageController extends GetxController
   };
 
   Future<void> changeLanguage(String language) async {
-    var langCode=languageMap[language];
+    var langCode = languageMap[language];
     var locale = Locale(langCode!);
     Get.updateLocale(locale);
-    SharedPreferences prefs=await SharedPreferences.getInstance();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString(AppConstants.langCode, langCode);
     prefs.setString(AppConstants.langName, language);
   }
 
   void filterLanguages(String qry) {
-    query.value=qry;
+    query.value = qry;
     if (query.value.isEmpty) {
       filteredLanguage.assignAll(listOfLanguage);
       log("total are ${filteredLanguage.length}");
     } else {
-      filteredLanguage.assignAll(listOfLanguage.where((item) =>item.toLowerCase().contains(query.value.trim().toLowerCase())));
+      filteredLanguage.assignAll(
+        listOfLanguage.where(
+          (item) =>
+              item.toLowerCase().contains(query.value.trim().toLowerCase()),
+        ),
+      );
       log("total are ${filteredLanguage.length}");
-      for(var i in filteredLanguage){
+      for (var i in filteredLanguage) {
         log("item are $i}");
       }
     }
   }
-
 }

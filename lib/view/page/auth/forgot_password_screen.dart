@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:task_manager_app/controller/login_controller.dart';
@@ -14,7 +13,7 @@ class ForgotPasswordScreen extends StatelessWidget {
   ForgotPasswordScreen({super.key});
   static const String route = "Forgot-pass-scr";
   final emailController = TextEditingController();
-  final loginController=Get.find<LoginController>();
+  final loginController = Get.find<LoginController>();
 
   @override
   Widget build(BuildContext context) {
@@ -76,11 +75,16 @@ class ForgotPasswordScreen extends StatelessWidget {
                 margin: EdgeInsets.only(top: 12, bottom: 12),
                 width: double.infinity,
                 height: 48,
-                child: Obx(() => loginController.isLoading.value?const Center(child: CircularProgressIndicator(),):CustomFlatButton(()
-                async {
-               bool  response= await AuthServices().requestResetPassword(emailController.text);
-               response?Get.dialog(_showConfirmationDialog()):SizedBox();
-                  }, "Continue"),
+                child: Obx(
+                  () => loginController.isLoading.value
+                      ? const Center(child: CircularProgressIndicator())
+                      : CustomFlatButton(() async {
+                          bool response = await AuthServices()
+                              .requestResetPassword(emailController.text);
+                          response
+                              ? Get.dialog(_showConfirmationDialog())
+                              : SizedBox();
+                        }, "Continue"),
                 ),
               ),
             ],
@@ -89,7 +93,8 @@ class ForgotPasswordScreen extends StatelessWidget {
       ),
     );
   }
-  Widget _showConfirmationDialog(){
+
+  Widget _showConfirmationDialog() {
     return Center(
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 24),
@@ -105,16 +110,11 @@ class ForgotPasswordScreen extends StatelessWidget {
             children: [
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 82),
-                child: Image.asset(
-                  "assets/images/OnSuccess.png",
-                ),
+                child: Image.asset("assets/images/OnSuccess.png"),
               ),
               Container(
                 margin: EdgeInsets.only(top: 24),
-                child: CustomText().CustomTitle(
-                  "Reset Password",
-                  24,
-                ),
+                child: CustomText().CustomTitle("Reset Password", 24),
               ),
               Container(
                 margin: EdgeInsets.only(top: 12),

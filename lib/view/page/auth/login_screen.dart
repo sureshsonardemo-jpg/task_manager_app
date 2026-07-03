@@ -6,6 +6,7 @@ import 'package:task_manager_app/res/colors.dart';
 import 'package:task_manager_app/services/auth_services.dart';
 import 'package:task_manager_app/view/page/auth/forgot_password_screen.dart';
 import 'package:task_manager_app/view/page/auth/signup_screen.dart';
+import 'package:task_manager_app/view/responsive.dart';
 import 'package:task_manager_app/view/widget/app_textfields.dart';
 import 'package:task_manager_app/view/widget/custom_flat_button.dart';
 import 'package:task_manager_app/view/widget/custom_titles.dart';
@@ -19,20 +20,25 @@ class LoginScreen extends StatelessWidget {
   final passController=TextEditingController();
   @override
   Widget build(BuildContext context) {
-    double scrHeight = MediaQuery.of(context).size.height;
-    double scrWidth = MediaQuery.of(context).size.width;
-    var figmaHeight = 812;
-    var figmaWidth = 375;
-    double H(double value) => (value / figmaHeight) * scrHeight;
-    double W(double value) => (value / figmaWidth) * scrWidth;
-
     return Scaffold(
       backgroundColor: AppColors.white,
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20),
+      body:Responsive.isDesktop(context)?Center(
+        child: ConstrainedBox(constraints:BoxConstraints(maxHeight: 900,maxWidth: 400),
+          child: pageContent(context),),
+      )
+          :pageContent(context)
+    );
+  }
+
+  Widget pageContent(BuildContext context){
+    return  Padding(
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      child: SingleChildScrollView(
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Container(height: 44),
+            //logo
             Container(
               margin: EdgeInsets.only(top: 18),
               height:100,
@@ -42,22 +48,23 @@ class LoginScreen extends StatelessWidget {
                 color: AppColors.purple,
               ),
             ),
+            //welocme back
             Container(
               margin: EdgeInsets.only(top: 12),
-              height: 36,
               child: CustomText().CustomTitle("Welcome Back!",24),
             ),
+            //desc
             Container(
-              margin: EdgeInsets.only(top: H(12)),
-              height: H(44),
+              margin: EdgeInsets.only(top: 8),
               child: CustomText().CustomDesc(
-                "Sign in to continue managing your tasks and stay organized.",
-                W(14),
-                TextAlign.center,1.6
+                  "Sign in to continue managing your tasks and stay organized.",
+                  14,
+                  TextAlign.center,1.6
               ),
             ),
+            //input fields
             Container(
-              margin: EdgeInsets.only(top: H(24)),
+              margin: EdgeInsets.only(top: 24),
               child: AppTextfields().CustomTextField(
                 14,
                 "Email Address",
@@ -68,37 +75,40 @@ class LoginScreen extends StatelessWidget {
               ),
             ),
             Container(
-              margin: EdgeInsets.only(top: H(12)),
+              margin: EdgeInsets.only(top: 12),
               child: Obx(
-                () =>
+                    () =>
                     AppTextfields().CustomTextField(14,"Password", "* * * * * * *", true, false,passController),
-                  ),
+              ),
             ),
+            //forgot pass
             Container(
-              margin: EdgeInsets.only(top: H(16), left: H(210)),
+              margin: EdgeInsets.only(top: 16,),
+              alignment: Alignment.centerRight,
               child: InkWell(
                 onTap: () {
                   Get.toNamed(ForgotPasswordScreen.route);
-                  },
+                },
                 child: Text(
-                  "Forgot password?",
-                  style: Theme.of(context).textTheme.bodySmall
+                    "Forgot password?",
+                    style: Theme.of(context).textTheme.bodySmall
                 ),
               ),
             ),
+            //loginBtn
             Container(
-              margin: EdgeInsets.only(top: W(24)),
-              width: W(335),
-              height: H(44),
+              margin: EdgeInsets.only(top: 24),
+              width: double.infinity,
+              height:48,
               child: Obx(() =>  loginController.isLoading.value ?const Center(child: CircularProgressIndicator()):CustomFlatButton(() {
-                  if(emailController.text.isNotEmpty && passController.text.isNotEmpty) {
-                    auth.loginUser(emailController.text, passController.text);
-                  }
-                }, "Log In"),
+                if(emailController.text.isNotEmpty && passController.text.isNotEmpty) {
+                  auth.loginUser(emailController.text, passController.text);
+                }
+              }, "Log In"),
               ),
             ),
             Container(
-              margin: EdgeInsets.only(top: H(24)),
+              margin: EdgeInsets.only(top: 24),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -106,8 +116,8 @@ class LoginScreen extends StatelessWidget {
                   Text(
                     'Or continue with',
                     style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                      fontSize: H(14),
-                      height: H(1.5),
+                      fontSize: 14,
+                      height: 1.5,
                       color: AppColors.textGrey,
                     ),
                   ),
@@ -117,39 +127,38 @@ class LoginScreen extends StatelessWidget {
             ),
             //google apple logins
             Container(
-              margin: EdgeInsets.only(top: H(24)),
+              margin: EdgeInsets.only(top: 24),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
                     child:OutlinedButton(
-                        style: OutlinedButton.styleFrom(
-                            foregroundColor: AppColors.deactiveDot,
-                            side: BorderSide(color: AppColors.deactiveDot),
-                            alignment: Alignment.center,
-                          ),
-                        onPressed: () {
-                          AuthServices().continueWithGoogle();
-                        },
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 12,vertical: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Image.asset("assets/images/google.png",height:28,),
-                              Text(
-                                "Google",
-                                style: Theme.of(context).textTheme.bodyLarge!
-                                    .copyWith(
-                                      fontSize: 16,
-                                      color: AppColors.textTitleBlack,
-                                    ),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: AppColors.deactiveDot,
+                        side: BorderSide(color: AppColors.deactiveDot),
+                        alignment: Alignment.center,
+                      ),
+                      onPressed: () {
+                        AuthServices().continueWithGoogle();
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 12,vertical: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Image.asset("assets/images/google.png",height:28,),
+                            Text(
+                              "Google",
+                              style: Theme.of(context).textTheme.bodyLarge!
+                                  .copyWith(
+                                fontSize: 16,
+                                color: AppColors.textTitleBlack,
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
-
+                    ),
                   ),
                   SizedBox(width: 16),
                   Expanded(
@@ -182,11 +191,12 @@ class LoginScreen extends StatelessWidget {
                 ],
               ),
             ),
-            //don't have acc
-            Spacer(),
-            Container(margin:  EdgeInsets.only(bottom: 34),alignment: Alignment.center,
-              child: RichText(text: TextSpan(text: "Don’t have an account?",style:Theme.of(context).textTheme.headlineSmall!.copyWith(color: AppColors.textGrey,fontSize: H(14)),children: [
-                TextSpan(text: " Sign Up",style: Theme.of(context).textTheme.headlineSmall!.copyWith(color: AppColors.purple,fontSize: H(14)),recognizer: TapGestureRecognizer()..onTap=(){
+            //don't have acc spacer
+            SizedBox(height: 85,),
+            Container(margin:  EdgeInsets.only(bottom: 30),
+              alignment: Alignment.bottomCenter,
+              child: RichText(text: TextSpan(text: "Don’t have an account?",style:Theme.of(context).textTheme.headlineSmall!.copyWith(color: AppColors.textGrey,fontSize: 14),children: [
+                TextSpan(text: " Sign Up",style: Theme.of(context).textTheme.headlineSmall!.copyWith(color: AppColors.purple,fontSize: 14),recognizer: TapGestureRecognizer()..onTap=(){
                   Get.toNamed(SignupScreen.route);
                 })
               ]),

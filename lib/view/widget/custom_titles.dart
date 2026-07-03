@@ -6,6 +6,7 @@ class CustomText{
   Widget CustomTitle(String title, double fontSize) {
     return Text(
       title,
+      overflow: TextOverflow.ellipsis,
       style: GoogleFonts.beVietnamPro(
         fontWeight: FontWeight.w600,
         fontSize: fontSize,

@@ -31,7 +31,6 @@ class _MainScreenState extends State<MainScreen> {
       pages=[
       HomePage(userModel: widget.user),
       SettingPage(userModel: widget.user,)];
-      Get.lazyPut<HomeController>(() => HomeController());
       Get.put(LoginController());
   }
 @override
@@ -45,7 +44,6 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBody: true,
       backgroundColor: AppColors.homeBG,
       body: Obx(() =>  IndexedStack(
           index: homeController.pageIndex.value,
@@ -58,30 +56,27 @@ class _MainScreenState extends State<MainScreen> {
         },
         backgroundColor: AppColors.purple,
         shape: CircleBorder(),
-        child: Icon(Icons.add, color: AppColors.white),
+        elevation: 0,
+        child: Icon(Icons.add, color: AppColors.white,size: 30,),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: _buildNavBar(),
+      bottomNavigationBar:  BottomAppBar(
+      color: AppColors.white,
+      shape: CircularNotchedRectangle(),
+      notchMargin: 10,
+      child: _buildNavBar(),
+    ),
+
     );
   }
 
   Widget _buildNavBar() {
-    return Obx(() =>  Container(
-        height: 94,
-        decoration: BoxDecoration(
-          color: AppColors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(25),
-            topRight: Radius.circular(25),
-          ),
-        ),
+    return Obx(() =>  SizedBox(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            GestureDetector(
-                    onTap: ()
-                    {
+            GestureDetector(onTap: () {
                       homeController.pageIndex.value==0?null:homeController.pageIndex.value=0;
                       log("home tapped");
                     },
@@ -135,4 +130,5 @@ class _MainScreenState extends State<MainScreen> {
         ),
       ));
   }
+
 }

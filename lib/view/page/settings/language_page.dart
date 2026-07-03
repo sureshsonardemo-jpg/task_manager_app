@@ -55,8 +55,9 @@ class _LanguagePageState extends State<LanguagePage> {
                   shrinkWrap: true,
                   itemCount: langController.filteredLanguage.length,
                   //physics: NeverScrollableScrollPhysics(),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
+                  gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent: 200,
+                    // crossAxisCount: 2,
                     childAspectRatio: 3,
                     crossAxisSpacing: 12,
                     mainAxisSpacing: 16,

@@ -38,35 +38,45 @@ class SettingPage extends StatelessWidget {
             //Upper Bar
             CommonUpperBar(onBack: () =>homeController.pageIndex.value=0,middleTxt: "Settings",),
             SizedBox(height: 24),
-            GestureDetector(onTap: () => Get.to(ProfileDetailsPage(usr: userModel )),
-                child: UserDetailsTile(currentUsr: userModel)),
-            SizedBox(height: 20),
-            Container(padding: EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: AppColors.white,
-                borderRadius: BorderRadius.circular(12)
-              ),
-              child: Column(
-                children: [
-                  GestureDetector( onTap: () {
-                    Get.toNamed(LanguagePage.route);
-                  },
-                      child: MenuItem(item: listOfMenuItems[0])),
-                  Divider(),
-                  GestureDetector(onTap: () {
-                    Get.dialog(
-                      ConfirmationDialog(gapHeight: 20, imgPath: "assets/images/OnLogout.png", titletxt: "Log out?", bodytxt: "Are you sure you want to log out?",
-                        canceltxt: "No", confirmtxt: "Yes",
-                        onDelete: () async {
-                         await Supabase.instance.client.auth.signOut();
-                        // automatically redirects user to login screen
-                      },)
-                    );
-                  },
-                      child: MenuItem(item: listOfMenuItems[1]))
-                ],
-              ),
-            )
+           Expanded(
+             child: SingleChildScrollView(
+               child: Column(
+                 children: [
+                   GestureDetector(onTap: () => Get.to(ProfileDetailsPage(usr: userModel )),
+                       child: UserDetailsTile(currentUsr: userModel)),
+                   SizedBox(height: 20),
+                   Container(
+                     padding: EdgeInsets.all(12),
+                     decoration: BoxDecoration(
+                         color: AppColors.white,
+                         borderRadius: BorderRadius.circular(12)
+                     ),
+                     child: Column(
+                       children: [
+                         GestureDetector( onTap: () {
+                           Get.toNamed(LanguagePage.route);
+                         },
+                             child: MenuItem(item: listOfMenuItems[0])),
+                         Divider(),
+                         GestureDetector(onTap: () {
+                           Get.dialog(
+                               ConfirmationDialog(gapHeight: 20, imgPath: "assets/images/OnLogout.png", titletxt: "Log out?", bodytxt: "Are you sure you want to log out?",
+                                 canceltxt: "No", confirmtxt: "Yes",
+                                 onDelete: () async {
+                                   await Supabase.instance.client.auth.signOut();
+                                   // automatically redirects user to login screen
+                                 },)
+                           );
+                         },
+                             child: MenuItem(item: listOfMenuItems[1]))
+                       ],
+                     ),
+                   ),
+
+                 ],
+               ),
+             ),
+           )
           ],
         ),
       ),
